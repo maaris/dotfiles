@@ -20,8 +20,7 @@ Plug 'shougo/neocomplcache'
 Plug 'tomtom/tcomment_vim'
 Plug 'ecomba/vim-ruby-refactoring'
 Plug 'tpope/vim-bundler'
-" Plug 'Keithbsmiley/rspec.vim'
-Plug 'thoughtbot/vim-rspec'
+Plug 'Keithbsmiley/rspec.vim'
 Plug 'Townk/vim-autoclose'
 Plug 'asux/vim-capybara'
 Plug 'scrooloose/syntastic'
@@ -29,7 +28,7 @@ Plug 'ngmy/vim-rubocop'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-textobj-user'
-" Plug 'kana/vim-vspec'
+Plug 'kana/vim-vspec'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'takac/vim-hardtime'
 Plug 'tmhedberg/matchit'
@@ -61,8 +60,9 @@ if executable('ag')
   let g:FZF_DEFAULT_COMMAND = 'ag --ignore={build,.git,.project,*.o,*.d,hw_1_5/*} %s -l --hidden -g ""'
 endif
 
-" map ctlr + p to fzf
-nnoremap <silent> <C-p> :FZF -m<CR>
+set runtimepath^=~/.config/nvim/bundle/ctrlp.vim
+
+nnoremap <silent> <C-f> :FZF -m<CR>
 nmap <Leader>c :Commits<CR>
 nmap <Leader>h :History<CR>
 
@@ -193,19 +193,11 @@ let g:python_host_prog = '/usr/bin/python'
 " Exiting insert mode
 :imap jj <Esc>
 
-" nmap <silent> <leader>t :TestNearest<CR>
-" nmap <silent> <leader>T :TestFile<CR>
-" nmap <silent> <leader>a :TestSuite<CR>
-" nmap <silent> <leader>l :TestLast<CR>
-" nmap <silent> <leader>g :TestVisit<CR>
-
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
-let g:rspec_command = "!bundle exec rspec -I . {rspec}"
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
 
 " Saving files on focus lost
 :au FocusLost * silent! wa
