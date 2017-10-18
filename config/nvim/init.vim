@@ -3,9 +3,14 @@ set nocompatible
 filetype off
 
 call plug#begin('~/.local/share/nvim/plugged')
+
 Plug 'tpope/vim-rails'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'MarcWeber/vim-addon-mw-utils'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim' 
+
 Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets'
 Plug 'garbas/vim-snipmate'
@@ -21,6 +26,7 @@ Plug 'asux/vim-capybara'
 Plug 'scrooloose/syntastic'
 Plug 'ngmy/vim-rubocop'
 Plug 'Lokaltog/vim-easymotion'
+Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-vspec'
 Plug 'nelstrom/vim-textobj-rubyblock'
@@ -36,24 +42,37 @@ Plug 'whatyouhide/vim-gotham'
 Plug 'davb5/wombat256dave'
 Plug 'vim-airline/vim-airline'
 Plug 'mxw/vim-jsx'
+Plug 'Shougo/neocomplete'
 " ES2015 code snippets (Optional)
 Plug 'epilande/vim-es2015-snippets'
-
+Plug 'janko-m/vim-test'
 " React code snippets
 Plug 'epilande/vim-react-snippets'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'flazz/vim-colorschemes'
 
-" Ultisnips
-Plug 'SirVer/ultisnips'
+cal plug#end()
 
 
-call plug#end()
+let g:FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null" 
+
+if executable('ag')
+  let g:FZF_DEFAULT_COMMAND = 'ag --ignore={build,.git,.project,*.o,*.d,hw_1_5/*} %s -l --hidden -g ""'
+endif
+
+" map ctlr + p to fzf
+nnoremap <silent> <C-p> :FZF -m<CR>
+nmap <Leader>c :Commits<CR>
+nmap <Leader>h :History<CR>
+
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
 
 filetype plugin indent on
 
 let mapleader=","
 
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-set runtimepath^=~/.config//nvim/bundle/ctrlp.vim
 
 " rubocop
 let g:vimrubocop_keymap = 0
@@ -68,9 +87,16 @@ function! Rubocop()
   SyntasticCheck()
 endfun
 
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 runtime macros/matchit.vim
 
 set cursorline
+
 " syntastic
 let g:syntastic_auto_loc_list=1
 let g:syntastic_enable_highlighting=0
@@ -146,7 +172,7 @@ set autochdir
 
 filetype plugin indent on
 
-colorscheme wombat256dave
+colorscheme brogrammer
 
 " Neo complete cache configuration
 " Disable AutoComplPop.
@@ -160,8 +186,17 @@ let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 " hides buffers instead of closing them
 
+let g:loaded_python3_provider=1
+let g:python_host_prog = '/usr/bin/python'
+
 " Exiting insert mode
 :imap jj <Esc>
+
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
 
 " Saving files on focus lost
 :au FocusLost * silent! wa
